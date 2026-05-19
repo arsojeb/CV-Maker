@@ -24,7 +24,7 @@ var colors = [
 
 /* Section definitions with order and visibility */
 var sections = [
-  { id: 'summary', label: 'Professional Summary', icon: 'fa-align-left', enabled: true },
+  { id: 'summary', label: 'Summary', icon: 'fa-align-left', enabled: true },
   { id: 'experience', label: 'Work Experience', icon: 'fa-briefcase', enabled: true },
   { id: 'education', label: 'Education', icon: 'fa-graduation-cap', enabled: true },
   { id: 'skills', label: 'Skills', icon: 'fa-star', enabled: true },
@@ -76,7 +76,7 @@ var entryConfigs = {
 
 /* Section title mapping for CV output */
 var cvSectionTitles = {
-  summary: 'Professional Summary',
+  summary: 'Summary',
   experience: 'Work Experience',
   education: 'Education',
   skills: 'Skills',
@@ -528,20 +528,148 @@ function buildEntryHtml(e, titleKey, subKey) {
 }
 
 /* ===== PRINT ===== */
+/* ===== PRINT ===== */
 function printCV() {
+
+  /* Validate */
   if (!document.getElementById('fullName').value.trim()) {
-    showToast('Please enter your name first', 'fa-triangle-exclamation', 'var(--danger)');
+    showToast(
+      'Please enter your name first',
+      'fa-triangle-exclamation',
+      'var(--danger)'
+    );
     return;
   }
-  showToast('Opening print dialog...');
-  var prevTitle = document.title || '';
-  try { document.title = ''; } catch (e) {}
-  setTimeout(function() { 
-    window.print(); 
-    setTimeout(function() { 
-      try { document.title = prevTitle; } catch (e) {}
-    }, 800);
-  }, 400);
+
+  showToast('Generating PDF...');
+
+  const element = document.getElementById('cvPaper');
+
+  /* ===== SAVE ORIGINAL STYLES ===== */
+  const originalStyles = {
+    width: element.style.width,
+    minHeight: element.style.minHeight,
+    height: element.style.height,
+    margin: element.style.margin,
+    transform: element.style.transform,
+    transformOrigin: element.style.transformOrigin,
+    boxShadow: element.style.boxShadow,
+    overflow: element.style.overflow,
+    background: element.style.background
+  };
+
+  /* ===== APPLY TEMPORARY A4 SIZE ===== */
+  element.style.width = '8.27in';
+  element.style.minHeight = '11.69in';
+  element.style.height = 'auto';
+
+  element.style.margin = '0 auto';
+  element.style.transform = 'none';
+  element.style.transformOrigin = 'top left';
+
+  element.style.boxShadow = 'none';
+  element.style.overflow = 'hidden';
+  element.style.background = '#ffffff';
+
+  /* ===== FIX CHILD ELEMENTS ===== */
+  const allChildren = element.querySelectorAll('*');
+
+  allChildren.forEach(function(child) {
+    child.style.maxWidth = '100%';
+    child.style.boxSizing = 'border-box';
+  });
+
+  /* ===== PDF OPTIONS ===== */
+  const opt = {
+
+    margin: 0,
+
+    filename: 'resume.pdf',
+
+    image: {
+      type: 'jpeg',
+      quality: 1
+    },
+
+    html2canvas: {
+      scale: 4,
+      useCORS: true,
+      allowTaint: true,
+      scrollX: 0,
+      scrollY: 0,
+      backgroundColor: '#ffffff'
+    },
+
+    jsPDF: {
+      unit: 'in',
+      format: [8.27, 11.69],
+      orientation: 'portrait'
+    },
+
+    pagebreak: {
+      mode: ['avoid-all', 'css', 'legacy']
+    }
+  };
+
+  /* ===== GENERATE PDF ===== */
+  html2pdf()
+    .set(opt)
+    .from(element)
+    .save()
+
+    .then(function() {
+
+      /* ===== RESTORE ORIGINAL STYLES ===== */
+      element.style.width = originalStyles.width;
+      element.style.minHeight = originalStyles.minHeight;
+      element.style.height = originalStyles.height;
+
+      element.style.margin = originalStyles.margin;
+      element.style.transform = originalStyles.transform;
+      element.style.transformOrigin = originalStyles.transformOrigin;
+
+      element.style.boxShadow = originalStyles.boxShadow;
+      element.style.overflow = originalStyles.overflow;
+      element.style.background = originalStyles.background;
+
+      allChildren.forEach(function(child) {
+        child.style.maxWidth = '';
+        child.style.boxSizing = '';
+      });
+
+      showToast('PDF downloaded successfully');
+
+    })
+
+    .catch(function(err) {
+
+      console.error(err);
+
+      showToast(
+        'Failed to generate PDF',
+        'fa-triangle-exclamation',
+        'var(--danger)'
+      );
+
+      /* Restore styles even on error */
+      element.style.width = originalStyles.width;
+      element.style.minHeight = originalStyles.minHeight;
+      element.style.height = originalStyles.height;
+
+      element.style.margin = originalStyles.margin;
+      element.style.transform = originalStyles.transform;
+      element.style.transformOrigin = originalStyles.transformOrigin;
+
+      element.style.boxShadow = originalStyles.boxShadow;
+      element.style.overflow = originalStyles.overflow;
+      element.style.background = originalStyles.background;
+
+      allChildren.forEach(function(child) {
+        child.style.maxWidth = '';
+        child.style.boxSizing = '';
+      });
+
+    });
 }
 
 /* ===== RESET ===== */
