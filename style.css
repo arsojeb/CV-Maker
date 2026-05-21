@@ -658,7 +658,8 @@ header {
   box-sizing: border-box;
 
   flex-shrink: 0;
-}.cv-paper[data-font="elegant"] {
+}
+.cv-paper[data-font="elegant"] {
   font-family: "Merriweather", serif;
 }
 .cv-paper .hf {
@@ -1152,7 +1153,6 @@ header {
   }
 }
 @media print {
-
   html,
   body {
     width: 8.27in;
@@ -1211,13 +1211,11 @@ header {
   }
 }
 
-
 /* =========================
    MOBILE RESPONSIVE FIXES
 ========================= */
 
 @media (max-width: 768px) {
-
   header {
     padding: 10px 14px;
     height: auto;
@@ -1384,7 +1382,6 @@ header {
 /* EXTRA SMALL DEVICES */
 
 @media (max-width: 480px) {
-
   .logo {
     font-size: 15px;
   }

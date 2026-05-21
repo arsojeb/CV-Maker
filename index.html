@@ -1,167 +1,472 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CV Forge — Advanced Resume Builder</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600;700&family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<header>
-<div class="logo"><i class="fa-solid fa-file-pen"></i>CV<span>Forge</span></div>
-<div class="header-actions">
-<button class="btn btn-ghost" onclick="importData()"><i class="fa-solid fa-file-import"></i> Import</button>
-<button class="btn btn-ghost" onclick="exportData()"><i class="fa-solid fa-file-export"></i> Export</button>
-<button class="btn btn-ghost" onclick="resetAll()"><i class="fa-solid fa-rotate-left"></i> Reset</button>
-<button class="btn btn-primary" onclick="printCV()"><i class="fa-solid fa-download"></i> Download PDF</button>
-</div>
-</header>
-<input type="file" id="importInput" class="hidden-input" accept=".json" onchange="handleImport(event)">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CV Forge — Advanced Resume Builder</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600;700&family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <i class="fa-solid fa-file-pen"></i>CV<span>Forge</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-ghost" onclick="importData()">
+          <i class="fa-solid fa-file-import"></i> Import
+        </button>
+        <button class="btn btn-ghost" onclick="exportData()">
+          <i class="fa-solid fa-file-export"></i> Export
+        </button>
+        <button class="btn btn-ghost" onclick="resetAll()">
+          <i class="fa-solid fa-rotate-left"></i> Reset
+        </button>
+        <button class="btn btn-primary" onclick="printCV()">
+          <i class="fa-solid fa-download"></i> Download PDF
+        </button>
+      </div>
+    </header>
+    <input
+      type="file"
+      id="importInput"
+      class="hidden-input"
+      accept=".json"
+      onchange="handleImport(event)"
+    />
 
-<main class="app-layout">
-<div class="editor-panel" role="form" aria-label="CV editor">
+    <main class="app-layout">
+      <div class="editor-panel" role="form" aria-label="CV editor">
+        <!-- Style & Layout -->
+        <div class="form-section">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <div class="section-icon">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+              </div>
+              <div>
+                <div class="section-title">Style & Layout</div>
+                <div class="section-subtitle">Template, color, and font</div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-down section-chevron"></i>
+          </div>
+          <div class="section-body">
+            <div class="field-label" style="margin-bottom: 5px">Template</div>
+            <div class="template-grid" id="templateGrid">
+              <div
+                class="template-option active"
+                data-tpl="classic"
+                onclick="selectTemplate('classic', this)"
+              >
+                <i class="fa-solid fa-newspaper"></i><span>Classic</span>
+              </div>
+              <div
+                class="template-option"
+                data-tpl="modern"
+                onclick="selectTemplate('modern', this)"
+              >
+                <i class="fa-solid fa-bolt"></i><span>Modern</span>
+              </div>
+              <div
+                class="template-option"
+                data-tpl="minimal"
+                onclick="selectTemplate('minimal', this)"
+              >
+                <i class="fa-solid fa-minus"></i><span>Minimal</span>
+              </div>
+              <div
+                class="template-option"
+                data-tpl="creative"
+                onclick="selectTemplate('creative', this)"
+              >
+                <i class="fa-solid fa-shapes"></i><span>Creative</span>
+              </div>
+              <div
+                class="template-option"
+                data-tpl="executive"
+                onclick="selectTemplate('executive', this)"
+              >
+                <i class="fa-solid fa-crown"></i><span>Executive</span>
+              </div>
+              <div
+                class="template-option"
+                data-tpl="compact"
+                onclick="selectTemplate('compact', this)"
+              >
+                <i class="fa-solid fa-table-cells"></i><span>Compact</span>
+              </div>
+            </div>
+            <div class="field-label" style="margin-top: 12px">Accent Color</div>
+            <div class="color-row" id="colorRow"></div>
+            <div class="field-label" style="margin-top: 12px">Font Pairing</div>
+            <div class="font-options" id="fontOptions">
+              <div
+                class="font-option active"
+                data-font="elegant"
+                onclick="selectFont('elegant', this)"
+              >
+                <div
+                  class="fp"
+                  style="font-family: &quot;Playfair Display&quot;, serif"
+                >
+                  Aa
+                </div>
+                <div class="fn">Elegant</div>
+              </div>
+              <div
+                class="font-option"
+                data-font="professional"
+                onclick="selectFont('professional', this)"
+              >
+                <div class="fp" style="font-family: &quot;Lora&quot;, serif">
+                  Aa
+                </div>
+                <div class="fn">Professional</div>
+              </div>
+              <div
+                class="font-option"
+                data-font="contemporary"
+                onclick="selectFont('contemporary', this)"
+              >
+                <div
+                  class="fp"
+                  style="font-family: &quot;Space Grotesk&quot;, sans-serif"
+                >
+                  Aa
+                </div>
+                <div class="fn">Contemporary</div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-<!-- Style & Layout -->
-<div class="form-section">
-<div class="section-header" onclick="toggleSection(this)">
-<div class="section-header-left"><div class="section-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div><div><div class="section-title">Style & Layout</div><div class="section-subtitle">Template, color, and font</div></div></div>
-<i class="fa-solid fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-body">
-<div class="field-label" style="margin-bottom:5px">Template</div>
-<div class="template-grid" id="templateGrid">
-<div class="template-option active" data-tpl="classic" onclick="selectTemplate('classic',this)"><i class="fa-solid fa-newspaper"></i><span>Classic</span></div>
-<div class="template-option" data-tpl="modern" onclick="selectTemplate('modern',this)"><i class="fa-solid fa-bolt"></i><span>Modern</span></div>
-<div class="template-option" data-tpl="minimal" onclick="selectTemplate('minimal',this)"><i class="fa-solid fa-minus"></i><span>Minimal</span></div>
-<div class="template-option" data-tpl="creative" onclick="selectTemplate('creative',this)"><i class="fa-solid fa-shapes"></i><span>Creative</span></div>
-<div class="template-option" data-tpl="executive" onclick="selectTemplate('executive',this)"><i class="fa-solid fa-crown"></i><span>Executive</span></div>
-<div class="template-option" data-tpl="compact" onclick="selectTemplate('compact',this)"><i class="fa-solid fa-table-cells"></i><span>Compact</span></div>
-</div>
-<div class="field-label" style="margin-top:12px">Accent Color</div>
-<div class="color-row" id="colorRow"></div>
-<div class="field-label" style="margin-top:12px">Font Pairing</div>
-<div class="font-options" id="fontOptions">
-<div class="font-option active" data-font="elegant" onclick="selectFont('elegant',this)"><div class="fp" style="font-family:'Playfair Display',serif">Aa</div><div class="fn">Elegant</div></div>
-<div class="font-option" data-font="professional" onclick="selectFont('professional',this)"><div class="fp" style="font-family:'Lora',serif">Aa</div><div class="fn">Professional</div></div>
-<div class="font-option" data-font="contemporary" onclick="selectFont('contemporary',this)"><div class="fp" style="font-family:'Space Grotesk',sans-serif">Aa</div><div class="fn">Contemporary</div></div>
-</div>
-</div>
-</div>
+        <!-- Section Manager -->
+        <div class="form-section">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <div class="section-icon">
+                <i class="fa-solid fa-layer-group"></i>
+              </div>
+              <div>
+                <div class="section-title">Section Manager</div>
+                <div class="section-subtitle">
+                  Toggle visibility and reorder
+                </div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-down section-chevron"></i>
+          </div>
+          <div class="section-body">
+            <div class="section-manager-list" id="sectionManager"></div>
+          </div>
+        </div>
 
-<!-- Section Manager -->
-<div class="form-section">
-<div class="section-header" onclick="toggleSection(this)">
-<div class="section-header-left"><div class="section-icon"><i class="fa-solid fa-layer-group"></i></div><div><div class="section-title">Section Manager</div><div class="section-subtitle">Toggle visibility and reorder</div></div></div>
-<i class="fa-solid fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-body"><div class="section-manager-list" id="sectionManager"></div></div>
-</div>
+        <!-- Personal Info -->
+        <div class="form-section">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <div class="section-icon"><i class="fa-solid fa-user"></i></div>
+              <div>
+                <div class="section-title">Personal Information</div>
+                <div class="section-subtitle">Basic details and photo</div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-down section-chevron"></i>
+          </div>
+          <div class="section-body">
+            <div class="photo-upload-area">
+              <div
+                class="photo-preview"
+                id="photoPreview"
+                onclick="document.getElementById('photoInput').click()"
+                role="button"
+                tabindex="0"
+                aria-label="Upload photo"
+              >
+                <i class="fa-solid fa-camera"></i>
+              </div>
+              <input
+                type="file"
+                id="photoInput"
+                class="hidden-input"
+                accept="image/*"
+                onchange="handlePhoto(event)"
+              />
+              <div class="photo-upload-info">
+                <strong>Profile Photo</strong>Click to upload (optional, max
+                2MB)
+              </div>
+            </div>
+            <div class="form-grid">
+              <div class="field-group full">
+                <label class="field-label" for="fullName">Full Name</label
+                ><input
+                  class="field-input"
+                  id="fullName"
+                  type="text"
+                  placeholder="John Doe"
+                  oninput="updatePreview()"
+                />
+              </div>
+              <div class="field-group full">
+                <label class="field-label" for="jobTitle">Job Title</label
+                ><input
+                  class="field-input"
+                  id="jobTitle"
+                  type="text"
+                  placeholder="Senior Software Engineer"
+                  oninput="updatePreview()"
+                />
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="email">Email</label
+                ><input
+                  class="field-input"
+                  id="email"
+                  type="email"
+                  placeholder="john@example.com"
+                  oninput="updatePreview()"
+                />
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="phone">Phone</label
+                ><input
+                  class="field-input"
+                  id="phone"
+                  type="tel"
+                  placeholder="+1 234 567 890"
+                  oninput="updatePreview()"
+                />
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="location">Location</label
+                ><input
+                  class="field-input"
+                  id="location"
+                  type="text"
+                  placeholder="New York, USA"
+                  oninput="updatePreview()"
+                />
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="website"
+                  >Website / LinkedIn</label
+                ><input
+                  class="field-input"
+                  id="website"
+                  type="text"
+                  placeholder="linkedin.com/in/johndoe"
+                  oninput="updatePreview()"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
 
-<!-- Personal Info -->
-<div class="form-section">
-<div class="section-header" onclick="toggleSection(this)">
-<div class="section-header-left"><div class="section-icon"><i class="fa-solid fa-user"></i></div><div><div class="section-title">Personal Information</div><div class="section-subtitle">Basic details and photo</div></div></div>
-<i class="fa-solid fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-body">
-<div class="photo-upload-area">
-<div class="photo-preview" id="photoPreview" onclick="document.getElementById('photoInput').click()" role="button" tabindex="0" aria-label="Upload photo"><i class="fa-solid fa-camera"></i></div>
-<input type="file" id="photoInput" class="hidden-input" accept="image/*" onchange="handlePhoto(event)">
-<div class="photo-upload-info"><strong>Profile Photo</strong>Click to upload (optional, max 2MB)</div>
-</div>
-<div class="form-grid">
-<div class="field-group full"><label class="field-label" for="fullName">Full Name</label><input class="field-input" id="fullName" type="text" placeholder="John Doe" oninput="updatePreview()"></div>
-<div class="field-group full"><label class="field-label" for="jobTitle">Job Title</label><input class="field-input" id="jobTitle" type="text" placeholder="Senior Software Engineer" oninput="updatePreview()"></div>
-<div class="field-group"><label class="field-label" for="email">Email</label><input class="field-input" id="email" type="email" placeholder="john@example.com" oninput="updatePreview()"></div>
-<div class="field-group"><label class="field-label" for="phone">Phone</label><input class="field-input" id="phone" type="tel" placeholder="+1 234 567 890" oninput="updatePreview()"></div>
-<div class="field-group"><label class="field-label" for="location">Location</label><input class="field-input" id="location" type="text" placeholder="New York, USA" oninput="updatePreview()"></div>
-<div class="field-group"><label class="field-label" for="website">Website / LinkedIn</label><input class="field-input" id="website" type="text" placeholder="linkedin.com/in/johndoe" oninput="updatePreview()"></div>
-</div>
-</div>
-</div>
+        <!-- Summary -->
+        <div class="form-section" data-section-id="summary">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <div class="section-icon">
+                <i class="fa-solid fa-align-left"></i>
+              </div>
+              <div>
+                <div class="section-title">Summary</div>
+                <div class="section-subtitle">Brief introduction</div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-down section-chevron"></i>
+          </div>
+          <div class="section-body">
+            <div class="field-group">
+              <textarea
+                class="field-textarea"
+                id="summary"
+                placeholder="Experienced software engineer with 8+ years building scalable applications..."
+                oninput="updatePreview()"
+              ></textarea>
+            </div>
+          </div>
+        </div>
 
-<!-- Summary -->
-<div class="form-section" data-section-id="summary">
-<div class="section-header" onclick="toggleSection(this)">
-<div class="section-header-left"><div class="section-icon"><i class="fa-solid fa-align-left"></i></div><div><div class="section-title">Summary</div><div class="section-subtitle">Brief introduction</div></div></div>
-<i class="fa-solid fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-body"><div class="field-group"><textarea class="field-textarea" id="summary" placeholder="Experienced software engineer with 8+ years building scalable applications..." oninput="updatePreview()"></textarea></div></div>
-</div>
+        <!-- Experience -->
+        <div class="form-section" data-section-id="experience">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <div class="section-icon">
+                <i class="fa-solid fa-briefcase"></i>
+              </div>
+              <div>
+                <div class="section-title">Work Experience</div>
+                <div class="section-subtitle" id="expCount">No entries yet</div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-down section-chevron"></i>
+          </div>
+          <div class="section-body">
+            <div id="experienceList"></div>
+            <button class="add-entry-btn" onclick="addEntry('experience')">
+              <i class="fa-solid fa-plus"></i> Add Experience
+            </button>
+          </div>
+        </div>
 
-<!-- Experience -->
-<div class="form-section" data-section-id="experience">
-<div class="section-header" onclick="toggleSection(this)">
-<div class="section-header-left"><div class="section-icon"><i class="fa-solid fa-briefcase"></i></div><div><div class="section-title">Work Experience</div><div class="section-subtitle" id="expCount">No entries yet</div></div></div>
-<i class="fa-solid fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-body"><div id="experienceList"></div><button class="add-entry-btn" onclick="addEntry('experience')"><i class="fa-solid fa-plus"></i> Add Experience</button></div>
-</div>
+        <!-- Education -->
+        <div class="form-section" data-section-id="education">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <div class="section-icon">
+                <i class="fa-solid fa-graduation-cap"></i>
+              </div>
+              <div>
+                <div class="section-title">Education</div>
+                <div class="section-subtitle" id="eduCount">No entries yet</div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-down section-chevron"></i>
+          </div>
+          <div class="section-body">
+            <div id="educationList"></div>
+            <button class="add-entry-btn" onclick="addEntry('education')">
+              <i class="fa-solid fa-plus"></i> Add Education
+            </button>
+          </div>
+        </div>
 
-<!-- Education -->
-<div class="form-section" data-section-id="education">
-<div class="section-header" onclick="toggleSection(this)">
-<div class="section-header-left"><div class="section-icon"><i class="fa-solid fa-graduation-cap"></i></div><div><div class="section-title">Education</div><div class="section-subtitle" id="eduCount">No entries yet</div></div></div>
-<i class="fa-solid fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-body"><div id="educationList"></div><button class="add-entry-btn" onclick="addEntry('education')"><i class="fa-solid fa-plus"></i> Add Education</button></div>
-</div>
+        <!-- Skills -->
+        <div class="form-section" data-section-id="skills">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <div class="section-icon"><i class="fa-solid fa-star"></i></div>
+              <div>
+                <div class="section-title">Skills</div>
+                <div class="section-subtitle" id="skillCount">
+                  No skills added
+                </div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-down section-chevron"></i>
+          </div>
+          <div class="section-body">
+            <div class="skills-input-wrap">
+              <input
+                class="field-input"
+                id="skillInput"
+                type="text"
+                placeholder="Type a skill and press Enter"
+                onkeydown="
+                  if (event.key === 'Enter') {
+                    event.preventDefault();
+                    addSkill();
+                  }
+                "
+              /><button class="btn btn-primary btn-sm" onclick="addSkill()">
+                Add
+              </button>
+            </div>
+            <div class="skills-tags" id="skillsTags"></div>
+          </div>
+        </div>
 
-<!-- Skills -->
-<div class="form-section" data-section-id="skills">
-<div class="section-header" onclick="toggleSection(this)">
-<div class="section-header-left"><div class="section-icon"><i class="fa-solid fa-star"></i></div><div><div class="section-title">Skills</div><div class="section-subtitle" id="skillCount">No skills added</div></div></div>
-<i class="fa-solid fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-body">
-<div class="skills-input-wrap"><input class="field-input" id="skillInput" type="text" placeholder="Type a skill and press Enter" onkeydown="if(event.key==='Enter'){event.preventDefault();addSkill();}"><button class="btn btn-primary btn-sm" onclick="addSkill()">Add</button></div>
-<div class="skills-tags" id="skillsTags"></div>
-</div>
-</div>
+        <!-- Languages -->
+        <div class="form-section" data-section-id="languages">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <div class="section-icon"><i class="fa-solid fa-globe"></i></div>
+              <div>
+                <div class="section-title">Languages</div>
+                <div class="section-subtitle" id="langCount">
+                  No languages added
+                </div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-down section-chevron"></i>
+          </div>
+          <div class="section-body">
+            <div id="languagesList"></div>
+            <button class="add-entry-btn" onclick="addEntry('language')">
+              <i class="fa-solid fa-plus"></i> Add Language
+            </button>
+          </div>
+        </div>
 
-<!-- Languages -->
-<div class="form-section" data-section-id="languages">
-<div class="section-header" onclick="toggleSection(this)">
-<div class="section-header-left"><div class="section-icon"><i class="fa-solid fa-globe"></i></div><div><div class="section-title">Languages</div><div class="section-subtitle" id="langCount">No languages added</div></div></div>
-<i class="fa-solid fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-body"><div id="languagesList"></div><button class="add-entry-btn" onclick="addEntry('language')"><i class="fa-solid fa-plus"></i> Add Language</button></div>
-</div>
+        <!-- Projects -->
+        <div class="form-section" data-section-id="projects">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <div class="section-icon">
+                <i class="fa-solid fa-diagram-project"></i>
+              </div>
+              <div>
+                <div class="section-title">Projects</div>
+                <div class="section-subtitle" id="projCount">
+                  No entries yet
+                </div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-down section-chevron"></i>
+          </div>
+          <div class="section-body">
+            <div id="projectsList"></div>
+            <button class="add-entry-btn" onclick="addEntry('project')">
+              <i class="fa-solid fa-plus"></i> Add Project
+            </button>
+          </div>
+        </div>
 
-<!-- Projects -->
-<div class="form-section" data-section-id="projects">
-<div class="section-header" onclick="toggleSection(this)">
-<div class="section-header-left"><div class="section-icon"><i class="fa-solid fa-diagram-project"></i></div><div><div class="section-title">Projects</div><div class="section-subtitle" id="projCount">No entries yet</div></div></div>
-<i class="fa-solid fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-body"><div id="projectsList"></div><button class="add-entry-btn" onclick="addEntry('project')"><i class="fa-solid fa-plus"></i> Add Project</button></div>
-</div>
+        <!-- Certifications -->
+        <div class="form-section" data-section-id="certifications">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <div class="section-icon">
+                <i class="fa-solid fa-certificate"></i>
+              </div>
+              <div>
+                <div class="section-title">Certifications</div>
+                <div class="section-subtitle" id="certCount">
+                  No entries yet
+                </div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-down section-chevron"></i>
+          </div>
+          <div class="section-body">
+            <div id="certificationsList"></div>
+            <button class="add-entry-btn" onclick="addEntry('certification')">
+              <i class="fa-solid fa-plus"></i> Add Certification
+            </button>
+          </div>
+        </div>
+      </div>
 
-<!-- Certifications -->
-<div class="form-section" data-section-id="certifications">
-<div class="section-header" onclick="toggleSection(this)">
-<div class="section-header-left"><div class="section-icon"><i class="fa-solid fa-certificate"></i></div><div><div class="section-title">Certifications</div><div class="section-subtitle" id="certCount">No entries yet</div></div></div>
-<i class="fa-solid fa-chevron-down section-chevron"></i>
-</div>
-<div class="section-body"><div id="certificationsList"></div><button class="add-entry-btn" onclick="addEntry('certification')"><i class="fa-solid fa-plus"></i> Add Certification</button></div>
-</div>
+      <!-- Preview -->
+      <div class="preview-panel">
+        <div class="preview-label"><span class="dot"></span> Live Preview</div>
+        <div
+          class="cv-paper"
+          id="cvPaper"
+          data-template="classic"
+          data-font="elegant"
+        >
+          <div class="cv-empty" id="cvEmpty">
+            <i class="fa-solid fa-file-circle-plus"></i>
+            <p>Start filling in your details to see your CV come to life.</p>
+          </div>
+          <div id="cvContent" style="display: none"></div>
+        </div>
+      </div>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <div class="toast-container" id="toastContainer"></div>
 
-</div>
-
-<!-- Preview -->
-<div class="preview-panel">
-<div class="preview-label"><span class="dot"></span> Live Preview</div>
-<div class="cv-paper" id="cvPaper" data-template="classic" data-font="elegant">
-<div class="cv-empty" id="cvEmpty"><i class="fa-solid fa-file-circle-plus"></i><p>Start filling in your details to see your CV come to life.</p></div>
-<div id="cvContent" style="display:none"></div>
-</div>
-</div>
-</main>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<div class="toast-container" id="toastContainer"></div>
-
-<script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
