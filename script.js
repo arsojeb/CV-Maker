@@ -20,7 +20,10 @@ const sectionOrder = [
 let state = {
   template: "executive",
   font: "professional",
-  accent: "#2f4f6f",
+  // FIX #2: default accent now matches the swatch renderColorSwatches()
+  // marks as active on load (accentColors[0]), instead of an arbitrary
+  // hex that didn't correspond to any swatch.
+  accent: accentColors[0].hex,
   photo: null,
   sections: sectionOrder.map((s, i) => ({ ...s, visible: true, order: i })),
   experience: [],
@@ -47,15 +50,19 @@ function ensureLanguageSection() {
       order: maxOrder + 1,
     };
     state.sections.push(lang);
-  }
-  // If the user has actually added a language, make sure the section
-  // is visible. This also fixes older imported data where Languages
-  // was missing or accidentally saved as hidden.
-  if (
-    Array.isArray(state.languages) &&
-    state.languages.some((l) => l && String(l.name || "").trim())
-  ) {
-    lang.visible = true;
+    // FIX #1: the "force visible when languages exist" correction below
+    // used to run unconditionally on every call (i.e. on every single
+    // updatePreview()), which meant toggling the Languages section off
+    // was immediately undone on the next render. It's now scoped to
+    // only the moment the section is created/missing (e.g. migrating
+    // older imported data), so a user's explicit visibility choice
+    // sticks afterwards.
+    if (
+      Array.isArray(state.languages) &&
+      state.languages.some((l) => l && String(l.name || "").trim())
+    ) {
+      lang.visible = true;
+    }
   }
 }
 
@@ -69,7 +76,7 @@ function renderColorSwatches() {
   document.getElementById("colorRow").innerHTML = accentColors
     .map(
       (c, i) =>
-        `<div class="color-swatch${i === 0 ? " active" : ""}" style="background:${c.hex}" data-color="${c.hex}" title="${c.name}" onclick="selectColor('${c.hex}',this)"></div>`,
+        `<div class="color-swatch${c.hex === state.accent ? " active" : ""}" style="background:${c.hex}" data-color="${c.hex}" title="${c.name}" onclick="selectColor('${c.hex}',this)"></div>`,
     )
     .join("");
 }
@@ -103,16 +110,25 @@ function toggleSection(header) {
 
 function renderSectionManager() {
   const c = document.getElementById("sectionManager");
-  const sorted = [...state.sections].sort((a, b) => a.order - b.order);
+  const sorted = [...state.sections].sort(
+    (a, b) => (Number(a.order) || 0) - (Number(b.order) || 0),
+  );
+  // FIX: styles.css defines a .btn-icon:disabled state for exactly this
+  // case, but it was never wired up — the top item's "move up" and the
+  // bottom item's "move down" buttons looked identical to every other
+  // arrow button while silently doing nothing (moveSection() just
+  // returns early past the array bounds).
   c.innerHTML = sorted
     .map(
-      (s) =>
-        `<div class="section-manager-item"><i class="fa-solid ${s.icon}" style="color:var(--accent);font-size:11px"></i><span class="sm-name">${s.label}</span><div class="sm-arrows"><button class="btn-icon" onclick="moveSection('${s.id}',-1)"><i class="fa-solid fa-chevron-up"></i></button><button class="btn-icon" onclick="moveSection('${s.id}',1)"><i class="fa-solid fa-chevron-down"></i></button></div><button class="toggle-switch${s.visible ? " active" : ""}" onclick="toggleSectionVisibility('${s.id}',this)"></button></div>`,
+      (s, i) =>
+        `<div class="section-manager-item"><i class="fa-solid ${s.icon}" style="color:var(--accent);font-size:11px"></i><span class="sm-name">${s.label}</span><div class="sm-arrows"><button class="btn-icon" onclick="moveSection('${s.id}',-1)"${i === 0 ? " disabled" : ""}><i class="fa-solid fa-chevron-up"></i></button><button class="btn-icon" onclick="moveSection('${s.id}',1)"${i === sorted.length - 1 ? " disabled" : ""}><i class="fa-solid fa-chevron-down"></i></button></div><button class="toggle-switch${s.visible ? " active" : ""}" onclick="toggleSectionVisibility('${s.id}',this)"></button></div>`,
     )
     .join("");
 }
 function moveSection(id, dir) {
-  const sorted = [...state.sections].sort((a, b) => a.order - b.order);
+  const sorted = [...state.sections].sort(
+    (a, b) => (Number(a.order) || 0) - (Number(b.order) || 0),
+  );
   const idx = sorted.findIndex((s) => s.id === id);
   const si = idx + dir;
   if (si < 0 || si >= sorted.length) return;
@@ -404,7 +420,9 @@ function updatePreview() {
     loc = document.getElementById("location").value,
     web = document.getElementById("website").value,
     summary = document.getElementById("summary").value;
-  const sortedSections = [...state.sections].sort((a, b) => a.order - b.order);
+  const sortedSections = [...state.sections].sort(
+    (a, b) => (Number(a.order) || 0) - (Number(b.order) || 0),
+  );
   let html = "";
 
   if (state.template === "creative") {
@@ -673,6 +691,9 @@ function exportData() {
     template: state.template,
     font: state.font,
     accent: state.accent,
+    // FIX #3: photo was previously omitted from the export entirely,
+    // so exporting + reimporting a CV silently dropped the profile photo.
+    photo: state.photo,
     sections: state.sections,
     experience: state.experience,
     education: state.education,
@@ -733,6 +754,19 @@ function handleImport(e) {
             s.classList.toggle("active", s.dataset.color === d.accent),
           );
       }
+      // FIX #3 (continued): restore the photo on import, and clear the
+      // preview back to the placeholder when the imported file has none,
+      // so a previously-set photo doesn't linger after importing data
+      // that shouldn't have one.
+      if (d.photo) {
+        state.photo = d.photo;
+        document.getElementById("photoPreview").innerHTML =
+          `<img src="${d.photo}" alt="Photo" />`;
+      } else {
+        state.photo = null;
+        document.getElementById("photoPreview").innerHTML =
+          `<i class="fa-solid fa-camera"></i>`;
+      }
       if (d.sections) state.sections = d.sections;
       if (d.experience) state.experience = d.experience;
       if (d.education) state.education = d.education;
@@ -774,6 +808,12 @@ function resetAll() {
   document.getElementById("summary").value = "";
   document.getElementById("photoPreview").innerHTML =
     `<i class="fa-solid fa-camera"></i>`;
+  // FIX #4: the photo file input's value wasn't cleared, so re-selecting
+  // the exact same file right after a reset wouldn't fire a change event
+  // in some browsers (no detectable value change), silently failing to
+  // re-attach the photo.
+  const photoInput = document.getElementById("photoInput");
+  if (photoInput) photoInput.value = "";
   renderExperienceEntries();
   renderEducationEntries();
   renderLanguageEntries();

@@ -762,7 +762,14 @@ header {
   position: absolute;
   left: 0;
   top: 0;
-  color: #888;
+  /* FIX: script.js's applyAccentColors() sets a --dash-color custom
+     property on each <li> intending it to drive this marker's color,
+     but nothing ever read it, so Modern/Creative/Compact templates
+     were permanently stuck at gray regardless of the chosen accent.
+     Classic/Minimal/Executive still win via their higher-specificity
+     template overrides below, so this only changes the templates that
+     had no explicit override. */
+  color: var(--dash-color, #888);
   font-size: 10px;
 }
 
