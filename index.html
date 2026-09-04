@@ -260,23 +260,25 @@
         border: 2px solid #e2e5e2; flex-shrink: 0;
       }
       .cv-photo img { width: 100%; height: 100%; object-fit: cover; }
-      .cv-contact { display: flex; flex-wrap: wrap; gap: 10px; font-size: 10px; color: #6b6b6b; }
-      .cv-contact i { margin-right: 3px; font-size: 9px; }
+      .cv-contact { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 10px; color: #6b6b6b; }
+      .cv-contact span { display: inline-flex; align-items: center; gap: 5px; line-height: 1; }
+      .cv-contact i { font-size: 9px; width: 1em; text-align: center; flex: 0 0 auto; }
       .cv-entry { margin-bottom: 10px; } .cv-entry:last-child { margin-bottom: 0; }
-      .cv-entry-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1px; gap: 6px; }
+      .cv-entry-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px; gap: 10px; }
+      .cv-entry-title { display: inline-block; }
       .cv-entry-title { font-weight: 700; font-size: 11px; }
       .cv-entry-date { font-size: 10px; color: #9a9a9a; white-space: nowrap; flex-shrink: 0; }
       .cv-entry-sub { font-size: 10px; color: #6b6b6b; margin-bottom: 2px; }
       .cv-entry-desc { font-size: 10px; color: #444; line-height: 1.6; }
-      .cv-skills-list { display: flex; flex-wrap: wrap; gap: 5px; }
-      .cv-skill-chip { padding: 2px 9px; border-radius: 3px; font-size: 10px; }
+      .cv-skills-list { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; }
+      .cv-skill-chip { display: inline-block; padding: 2px 9px; border-radius: 3px; font-size: 10px; line-height: 1.5; }
 
       .cv-detail-list { list-style: none; padding: 0; margin: 3px 0 0 0; }
-      .cv-detail-list li { position: relative; padding-left: 13px; margin-bottom: 2px; font-size: 10px; color: #444; line-height: 1.55; }
-      .cv-detail-list li::before { content: "\2014"; position: absolute; left: 0; top: 0; color: #999; font-size: 10px; }
+      .cv-detail-list li { display: flex; align-items: baseline; gap: 6px; margin-bottom: 2px; font-size: 10px; color: #444; line-height: 1.55; }
+      .cv-detail-list li::before { content: "\2014"; color: #999; font-size: 10px; flex: 0 0 auto; }
 
-      .cv-lang-list { display: flex; flex-wrap: wrap; gap: 6px; }
-      .cv-lang-chip { font-size: 10px; padding: 2px 9px; border-radius: 3px; }
+      .cv-lang-list { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+      .cv-lang-chip { display: inline-block; font-size: 10px; padding: 2px 9px; border-radius: 3px; line-height: 1.5; }
       .cv-lang-chip .cv-lang-name { font-weight: 600; }
       .cv-lang-chip .cv-lang-level { font-weight: 400; opacity: 0.7; margin-left: 3px; }
 
@@ -317,7 +319,7 @@
 
       /* ---- CREATIVE: sidebar layout ---- */
       .cv-paper[data-template="creative"] { display: flex; flex-direction: row; min-height: 11.69in; }
-      .cv-paper[data-template="creative"] .cv-sidebar { width: 37%; padding: 30px 20px; color: #fff; display: flex; flex-direction: column; align-items: center; background: var(--cv-accent); }
+      .cv-paper[data-template="creative"] .cv-sidebar { width: 37%; padding: 24px 20px; color: #fff; display: flex; flex-direction: column; align-items: center; background: var(--cv-accent); }
       .cv-paper[data-template="creative"] .cv-sidebar .cv-photo { border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.55); width: 88px; height: 88px; font-size: 30px; }
       .cv-paper[data-template="creative"] .cv-sidebar .cv-name { font-size: 15px; font-weight: 700; text-align: center; margin-bottom: 2px; }
       .cv-paper[data-template="creative"] .cv-sidebar .cv-title { font-size: 10px; text-align: center; opacity: 0.85; margin-bottom: 13px; }
@@ -329,7 +331,7 @@
       .cv-paper[data-template="creative"] .cv-sidebar .cv-skill-chip { background: rgba(255,255,255,0.16); color: #fff; border-radius: 20px; font-size: 9.5px; }
       .cv-paper[data-template="creative"] .cv-sidebar .cv-lang-list { justify-content: center; }
       .cv-paper[data-template="creative"] .cv-sidebar .cv-lang-chip { background: rgba(255,255,255,0.16); color: #fff; border-radius: 20px; font-size: 9.5px; }
-      .cv-paper[data-template="creative"] .cv-main { flex: 1; padding: 24px 24px; overflow: hidden; }
+      .cv-paper[data-template="creative"] .cv-main { flex: 1; padding: 24px 24px; overflow: visible; }
       .cv-paper[data-template="creative"] .cv-main .cv-section { margin-bottom: 15px; }
       .cv-paper[data-template="creative"] .cv-main .cv-section:last-child { margin-bottom: 0; }
       .cv-paper[data-template="creative"] .cv-main .cv-section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.6px; margin-bottom: 9px; padding-bottom: 5px; border-bottom: 2px solid var(--cv-accent); color: #1c1c1c; }
@@ -355,7 +357,7 @@
       .cv-paper[data-template="executive"] .cv-entry-date { font-size: 9px; color: #7c8791; }
       .cv-paper[data-template="executive"] .cv-entry-sub { font-size: 9.5px; color: #596570; margin-bottom: 3px; }
       .cv-paper[data-template="executive"] .cv-entry-desc { font-size: 9.4px; color: #424b54; line-height: 1.55; }
-      .cv-paper[data-template="executive"] .cv-detail-list li { font-size: 9.4px; color: #424b54; line-height: 1.5; margin-bottom: 2px; padding-left: 12px; }
+      .cv-paper[data-template="executive"] .cv-detail-list li { font-size: 9.4px; color: #424b54; line-height: 1.5; margin-bottom: 2px; }
       .cv-paper[data-template="executive"] .cv-detail-list li::before { color: var(--cv-accent); content: "•"; font-weight: 700; }
       .cv-paper[data-template="executive"] .cv-skills-list, .cv-paper[data-template="executive"] .cv-lang-list { gap: 5px; }
       .cv-paper[data-template="executive"] .cv-skill-chip, .cv-paper[data-template="executive"] .cv-lang-chip {
@@ -363,8 +365,9 @@
       }
 
       /* ---- COMPACT: dense & efficient ---- */
-      .cv-paper[data-template="compact"] .cv-header { padding: 18px 26px 12px; display: flex; gap: 14px; align-items: flex-start; border-bottom: 2px solid var(--cv-accent); }
+      .cv-paper[data-template="compact"] .cv-header { padding: 18px 26px 12px; display: flex; gap: 14px; align-items: center; border-bottom: 2px solid var(--cv-accent); }
       .cv-paper[data-template="compact"] .cv-header-text { flex: 1; }
+      .cv-paper[data-template="compact"] .cv-photo { width: 54px; height: 54px; margin-bottom: 0; }
       .cv-paper[data-template="compact"] .cv-name { font-size: 19px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 1px; }
       .cv-paper[data-template="compact"] .cv-title { font-size: 10px; color: #777; margin-bottom: 6px; }
       .cv-paper[data-template="compact"] .cv-section { padding: 10px 26px; border-bottom: 1px solid #f1f1f0; }
@@ -373,7 +376,7 @@
       .cv-paper[data-template="compact"] .cv-entry { margin-bottom: 7px; }
       .cv-paper[data-template="compact"] .cv-entry-desc { font-size: 9.5px; }
       .cv-paper[data-template="compact"] .cv-skill-chip { background: #f4f4f2; color: #444; font-size: 9.5px; padding: 2px 7px; }
-      .cv-paper[data-template="compact"] .cv-detail-list li { font-size: 9.5px; padding-left: 11px; }
+      .cv-paper[data-template="compact"] .cv-detail-list li { font-size: 9.5px; }
       .cv-paper[data-template="compact"] .cv-lang-chip { background: #f4f4f2; color: #444; font-size: 9.5px; padding: 2px 7px; }
 
       /* ---- ELEGANT: centered, photo-forward ---- */
@@ -416,45 +419,17 @@
       @keyframes ti { from{opacity:0;transform:translateX(30px)} to{opacity:1;transform:translateX(0)} }
       @keyframes to { to{opacity:0;transform:translateX(30px)} }
 
-      @media print {
-        @page { size: A4 portrait; margin: 0; }
-        html, body { width: 210mm; min-height: 297mm; margin: 0 !important; padding: 0 !important; background: #fff !important; }
-        *, *::before, *::after {
-          -webkit-print-color-adjust: exact !important;
-          print-color-adjust: exact !important;
-          color-adjust: exact !important;
-        }
-        body::before, body::after, header, .editor-panel, .preview-label, .print-tip, .toast-container { display: none !important; }
-        .app-layout { display: block !important; min-height: 0 !important; }
-        .preview-panel { display: block !important; padding: 0 !important; margin: 0 !important; background: #fff !important; overflow: visible !important; }
-        .cv-paper {
-          width: 210mm !important;
-          min-height: 297mm !important;
-          height: auto !important;
-          margin: 0 !important;
-          border-radius: 0 !important;
-          box-shadow: none !important;
-          overflow: visible !important;
-        }
-        /* Only avoid breaking WITHIN a section/entry — never force the whole
-           resume onto a single page, or content past page 1 gets clipped. */
-        .cv-header, .cv-section, .cv-entry { break-inside: avoid; page-break-inside: avoid; }
-        .cv-paper .cv-lang-list { display: flex !important; flex-wrap: wrap !important; visibility: visible !important; }
-        .cv-paper .cv-lang-chip { display: inline-flex !important; align-items: baseline !important; visibility: visible !important; break-inside: avoid !important; }
-
-        /* Creative template uses a flex row sidebar, which browsers don't
-           repaginate reliably. A table layout repeats the sidebar background
-           correctly on every printed page. */
-        .cv-paper[data-template="creative"] { display: table !important; table-layout: fixed !important; width: 210mm !important; min-height: 297mm !important; }
-        .cv-paper[data-template="creative"] .cv-sidebar { display: table-cell !important; width: 37% !important; vertical-align: top !important; }
-        .cv-paper[data-template="creative"] .cv-main { display: table-cell !important; width: 63% !important; vertical-align: top !important; overflow: visible !important; }
-      }
-      @media (max-width:900px) {
+      /* =========================================================
+         SCREEN RESPONSIVE STYLES
+         Explicitly limited to screen so they NEVER affect printing.
+         ========================================================= */
+      @media screen and (max-width:900px) {
         .app-layout { grid-template-columns: 1fr; }
         .editor-panel { max-height: none; border-right: none; border-bottom: 1px solid var(--line); }
         .preview-panel { max-height: none; padding: 18px 8px 30px; }
       }
-      @media (max-width:768px) {
+
+      @media screen and (max-width:768px) {
         header { padding: 10px 14px; height: auto; min-height: 58px; flex-direction: column; align-items: flex-start; gap: 10px; }
         .logo-word { font-size: 16px; } .header-actions { width: 100%; justify-content: flex-start; overflow-x: auto; padding-bottom: 2px; }
         .btn { font-size: 11px; padding: 7px 10px; flex-shrink: 0; }
@@ -465,7 +440,7 @@
         .skills-input-wrap { flex-direction: column; } .section-manager-item { flex-wrap: wrap; }
         .cv-paper { width: 100%; min-height: auto; transform: none !important; }
         .cv-paper[data-template="creative"] { flex-direction: column; }
-        .cv-paper[data-template="creative"] .cv-sidebar { width: 100%; padding: 22px 16px; }
+        .cv-paper[data-template="creative"] .cv-sidebar { width: 100%; padding: 20px 16px; }
         .cv-paper[data-template="creative"] .cv-main { padding: 20px 16px; }
         .cv-paper[data-template="classic"] .cv-header, .cv-paper[data-template="modern"] .cv-header, .cv-paper[data-template="minimal"] .cv-header, .cv-paper[data-template="executive"] .cv-header, .cv-paper[data-template="elegant"] .cv-header, .cv-paper[data-template="timeline"] .cv-header { padding: 22px 16px 14px; }
         .cv-paper[data-template="classic"] .cv-section, .cv-paper[data-template="modern"] .cv-section, .cv-paper[data-template="minimal"] .cv-section, .cv-paper[data-template="executive"] .cv-section, .cv-paper[data-template="compact"] .cv-section, .cv-paper[data-template="elegant"] .cv-section, .cv-paper[data-template="timeline"] .cv-section { padding-left: 16px; padding-right: 16px; }
@@ -474,15 +449,164 @@
         .cv-contact { flex-direction: column; gap: 4px; } .cv-entry-header { flex-direction: column; align-items: flex-start; gap: 2px; } .cv-entry-date { font-size: 9px; }
         .toast-container { right: 10px; left: 10px; top: auto; bottom: 12px; } .toast { width: 100%; }
       }
-      @media (max-width:480px) {
+
+      @media screen and (max-width:480px) {
         .logo-word { font-size: 14px; } .btn { font-size: 10px; padding: 6px 9px; }
         .template-grid, .font-options { grid-template-columns: 1fr; } .cv-paper { font-size: 9.5px; }
         .cv-paper[data-template="classic"] .cv-name, .cv-paper[data-template="modern"] .cv-name, .cv-paper[data-template="executive"] .cv-name, .cv-paper[data-template="elegant"] .cv-name, .cv-paper[data-template="timeline"] .cv-name { font-size: 21px; }
         .cv-paper[data-template="minimal"] .cv-name { font-size: 19px; letter-spacing: 2px; } .cv-paper[data-template="compact"] .cv-name { font-size: 17px; }
         .cv-photo { width: 52px; height: 52px; } .cv-paper[data-template="creative"] .cv-sidebar .cv-photo { width: 60px; height: 60px; }
       }
-      @media (prefers-reduced-motion: reduce) {
+
+      @media screen and (prefers-reduced-motion: reduce) {
         *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+      }
+
+      /* =========================================================
+         PRINT / PDF
+         MUST stay after all screen styles.
+         ========================================================= */
+      @media print {
+        @page {
+          size: A4 portrait;
+          margin: 0;
+        }
+
+        html, body {
+          width: 210mm !important;
+          min-width: 210mm !important;
+          max-width: 210mm !important;
+          min-height: 297mm !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          background: #ffffff !important;
+        }
+
+        *, *::before, *::after {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+          color-adjust: exact !important;
+        }
+
+        body::before,
+        body::after,
+        header,
+        .editor-panel,
+        .preview-label,
+        .print-tip,
+        .toast-container {
+          display: none !important;
+        }
+
+        .app-layout {
+          display: block !important;
+          width: 210mm !important;
+          min-width: 210mm !important;
+          min-height: 0 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+
+        .preview-panel {
+          display: block !important;
+          width: 210mm !important;
+          min-width: 210mm !important;
+          max-width: none !important;
+          height: auto !important;
+          max-height: none !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          background: #ffffff !important;
+          overflow: visible !important;
+        }
+
+        /* The CV keeps the selected template/font exactly as rendered on screen. */
+        .cv-paper {
+          width: 210mm !important;
+          min-width: 210mm !important;
+          max-width: 210mm !important;
+          min-height: 297mm !important;
+          height: auto !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          border-radius: 0 !important;
+          box-shadow: none !important;
+          overflow: visible !important;
+          transform: none !important;
+          box-sizing: border-box !important;
+        }
+
+        /* Keep individual sections/entries together when possible. */
+        .cv-header,
+        .cv-section,
+        .cv-entry {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
+        .cv-paper .cv-lang-list {
+          display: flex !important;
+          flex-wrap: wrap !important;
+          visibility: visible !important;
+        }
+
+        .cv-paper .cv-lang-chip {
+          display: inline-flex !important;
+          align-items: baseline !important;
+          visibility: visible !important;
+          break-inside: avoid !important;
+          page-break-inside: avoid !important;
+        }
+
+        /* =====================================================
+           CREATIVE TEMPLATE
+           Never allow the screen/mobile column layout to leak
+           into the PDF.
+           ===================================================== */
+        .cv-paper[data-template="creative"] {
+          display: table !important;
+          table-layout: fixed !important;
+          width: 210mm !important;
+          min-width: 210mm !important;
+          max-width: 210mm !important;
+          min-height: 297mm !important;
+          flex-direction: row !important;
+        }
+
+        .cv-paper[data-template="creative"] .cv-sidebar {
+          display: table-cell !important;
+          width: 37% !important;
+          vertical-align: top !important;
+          padding: 24px 20px !important;
+          background: var(--cv-accent) !important;
+          color: #ffffff !important;
+        }
+
+        .cv-paper[data-template="creative"] .cv-main {
+          display: table-cell !important;
+          width: 63% !important;
+          vertical-align: top !important;
+          padding: 24px 24px !important;
+          overflow: visible !important;
+        }
+
+        .cv-paper[data-template="creative"] .cv-sidebar .cv-contact {
+          flex-direction: column !important;
+        }
+
+        /* Restore horizontal entry headers for every printed template. */
+        .cv-entry-header {
+          flex-direction: row !important;
+          align-items: flex-start !important;
+        }
+
+        .cv-entry-date {
+          white-space: nowrap !important;
+        }
+
+        img {
+          max-width: 100% !important;
+        }
       }
     </style>
   </head>
